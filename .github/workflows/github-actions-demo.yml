@@ -4,34 +4,42 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
         type: choice
         options:
           - info
           - warning
           - debug
       print_tags:
-        description: 'True to print to STDOUT'
+        description: "True to print to STDOUT"
         required: true
         type: boolean
       tags:
-        description: 'Test scenario tags'
+        description: "Test scenario tags"
         required: true
         type: string
       environment:
-        description: 'Environment to run tests against'
+        description: "Environment to run tests against"
         type: environment
         required: true
 jobs:
+  print-var-setting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print var based on environment
+        # https://www.google.com.au/search?q=ternary
+        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/evaluate-expressions-in-workflows-and-actions#example
+        run: echo  The tags are ${{ inputs.environment == 'prod' && 'prod' || 'not production' }}
+
   print-tag:
     runs-on: ubuntu-latest
-    if: ${{ inputs.print_tags }} 
+    if: ${{ inputs.print_tags }}
     steps:
       - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }} 
-        
+        run: echo  The tags are ${{ inputs.tags }}
+
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
